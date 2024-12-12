@@ -1,4 +1,5 @@
 import express from "express"
+import morgan from "morgan";
 
 const tasks = [
     {
@@ -15,10 +16,22 @@ const tasks = [
     }
 ]
 
+
 const app = express();
 const PORT = 4000;
 
+app.use(morgan('tiny'))
+
+function middleware(req, res, next) {
+    req.requestBy = "Sajid Noor Muhammad";
+    next();
+}
+
+app.use(middleware)
+
+
 app.get('/', (req, res) => {
+    console.log("req.requestBy", req.requestBy)
     res.status(200).send(tasks);
 })
 
